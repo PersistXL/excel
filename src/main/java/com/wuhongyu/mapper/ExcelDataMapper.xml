@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wuhongyu.mapper.ExcelDataMapper" >
+  <resultMap id="BaseResultMap" type="com.wuhongyu.entity.ExcelData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="column1" property="column1" jdbcType="VARCHAR" />
+    <result column="column2" property="column2" jdbcType="VARCHAR" />
+    <result column="column3" property="column3" jdbcType="VARCHAR" />
+    <result column="column4" property="column4" jdbcType="VARCHAR" />
+    <result column="column5" property="column5" jdbcType="VARCHAR" />
+    <result column="column6" property="column6" jdbcType="VARCHAR" />
+    <result column="column7" property="column7" jdbcType="VARCHAR" />
+    <result column="column8" property="column8" jdbcType="VARCHAR" />
+    <result column="column9" property="column9" jdbcType="VARCHAR" />
+    <result column="column10" property="column10" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, column1, column2, column3, column4, column5, column6, column7, column8, column9, 
+    column10
+  </sql>
+  
+  <update id="updateColumn" statementType="STATEMENT">
+  	update excel_data
+  	set ${column} = null
+  </update>
+  
+  <update id="updateColumnNull" statementType="STATEMENT">
+  	update excel_data
+  	set
+  	${sql}
+  </update>
+  
+  <select id="cleanAll">
+  truncate table excel_data
+  </select>
+  
+  <delete id="deleteByKeys">
+    delete from excel_data
+    <where>
+    	id in 
+    	<foreach collection="ids" item="id" open="(" separator="," close=")">
+    		#{id}
+    	</foreach>
+    </where>
+  </delete>
+  
+  
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wuhongyu.entity.ExcelDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from excel_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from excel_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from excel_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wuhongyu.entity.ExcelDataExample" >
+    delete from excel_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wuhongyu.entity.ExcelData" >
+    insert into excel_data (id, column1, column2, 
+      column3, column4, column5, 
+      column6, column7, column8, 
+      column9, column10)
+    values (#{id,jdbcType=INTEGER}, #{column1,jdbcType=VARCHAR}, #{column2,jdbcType=VARCHAR}, 
+      #{column3,jdbcType=VARCHAR}, #{column4,jdbcType=VARCHAR}, #{column5,jdbcType=VARCHAR}, 
+      #{column6,jdbcType=VARCHAR}, #{column7,jdbcType=VARCHAR}, #{column8,jdbcType=VARCHAR}, 
+      #{column9,jdbcType=VARCHAR}, #{column10,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhongyu.entity.ExcelData" >
+    insert into excel_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="column1 != null" >
+        column1,
+      </if>
+      <if test="column2 != null" >
+        column2,
+      </if>
+      <if test="column3 != null" >
+        column3,
+      </if>
+      <if test="column4 != null" >
+        column4,
+      </if>
+      <if test="column5 != null" >
+        column5,
+      </if>
+      <if test="column6 != null" >
+        column6,
+      </if>
+      <if test="column7 != null" >
+        column7,
+      </if>
+      <if test="column8 != null" >
+        column8,
+      </if>
+      <if test="column9 != null" >
+        column9,
+      </if>
+      <if test="column10 != null" >
+        column10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="column1 != null" >
+        #{column1,jdbcType=VARCHAR},
+      </if>
+      <if test="column2 != null" >
+        #{column2,jdbcType=VARCHAR},
+      </if>
+      <if test="column3 != null" >
+        #{column3,jdbcType=VARCHAR},
+      </if>
+      <if test="column4 != null" >
+        #{column4,jdbcType=VARCHAR},
+      </if>
+      <if test="column5 != null" >
+        #{column5,jdbcType=VARCHAR},
+      </if>
+      <if test="column6 != null" >
+        #{column6,jdbcType=VARCHAR},
+      </if>
+      <if test="column7 != null" >
+        #{column7,jdbcType=VARCHAR},
+      </if>
+      <if test="column8 != null" >
+        #{column8,jdbcType=VARCHAR},
+      </if>
+      <if test="column9 != null" >
+        #{column9,jdbcType=VARCHAR},
+      </if>
+      <if test="column10 != null" >
+        #{column10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wuhongyu.entity.ExcelDataExample" resultType="java.lang.Integer" >
+    select count(*) from excel_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update excel_data
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.column1 != null" >
+        column1 = #{record.column1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column2 != null" >
+        column2 = #{record.column2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column3 != null" >
+        column3 = #{record.column3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column4 != null" >
+        column4 = #{record.column4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column5 != null" >
+        column5 = #{record.column5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column6 != null" >
+        column6 = #{record.column6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column7 != null" >
+        column7 = #{record.column7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column8 != null" >
+        column8 = #{record.column8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column9 != null" >
+        column9 = #{record.column9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.column10 != null" >
+        column10 = #{record.column10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update excel_data
+    set id = #{record.id,jdbcType=INTEGER},
+      column1 = #{record.column1,jdbcType=VARCHAR},
+      column2 = #{record.column2,jdbcType=VARCHAR},
+      column3 = #{record.column3,jdbcType=VARCHAR},
+      column4 = #{record.column4,jdbcType=VARCHAR},
+      column5 = #{record.column5,jdbcType=VARCHAR},
+      column6 = #{record.column6,jdbcType=VARCHAR},
+      column7 = #{record.column7,jdbcType=VARCHAR},
+      column8 = #{record.column8,jdbcType=VARCHAR},
+      column9 = #{record.column9,jdbcType=VARCHAR},
+      column10 = #{record.column10,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhongyu.entity.ExcelData" >
+    update excel_data
+    <set >
+      <if test="column1 != null" >
+        column1 = #{column1,jdbcType=VARCHAR},
+      </if>
+      <if test="column2 != null" >
+        column2 = #{column2,jdbcType=VARCHAR},
+      </if>
+      <if test="column3 != null" >
+        column3 = #{column3,jdbcType=VARCHAR},
+      </if>
+      <if test="column4 != null" >
+        column4 = #{column4,jdbcType=VARCHAR},
+      </if>
+      <if test="column5 != null" >
+        column5 = #{column5,jdbcType=VARCHAR},
+      </if>
+      <if test="column6 != null" >
+        column6 = #{column6,jdbcType=VARCHAR},
+      </if>
+      <if test="column7 != null" >
+        column7 = #{column7,jdbcType=VARCHAR},
+      </if>
+      <if test="column8 != null" >
+        column8 = #{column8,jdbcType=VARCHAR},
+      </if>
+      <if test="column9 != null" >
+        column9 = #{column9,jdbcType=VARCHAR},
+      </if>
+      <if test="column10 != null" >
+        column10 = #{column10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhongyu.entity.ExcelData" >
+    update excel_data
+    set column1 = #{column1,jdbcType=VARCHAR},
+      column2 = #{column2,jdbcType=VARCHAR},
+      column3 = #{column3,jdbcType=VARCHAR},
+      column4 = #{column4,jdbcType=VARCHAR},
+      column5 = #{column5,jdbcType=VARCHAR},
+      column6 = #{column6,jdbcType=VARCHAR},
+      column7 = #{column7,jdbcType=VARCHAR},
+      column8 = #{column8,jdbcType=VARCHAR},
+      column9 = #{column9,jdbcType=VARCHAR},
+      column10 = #{column10,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

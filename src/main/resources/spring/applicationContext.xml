@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+    default-autowire="byName">
+	<!-- 注解扫描, service.impl -->
+	<context:component-scan base-package="com.wuhongyu.service.impl" />
+	<!-- properties文件加载 -->
+	<!-- 数据源 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/excel" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	<!-- sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据库连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+   		<property name="mapperLocations" value="classpath:com/wuhongyu/mapper/*.xml"></property>
+		<!-- 配置分页插件 -->
+	    <property name="plugins">
+	       <array>
+	         <bean class="com.github.pagehelper.PageInterceptor">
+	           <property name="properties">
+	             <value>
+	               helperDialect=mysql
+	             </value>
+	           </property>
+	         </bean>
+	       </array>
+	     </property>
+	</bean>
+	<!-- mapper扫描器 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.wuhongyu.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	<!-- 事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" />
+	<!-- 声明式事务 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="ins*" />
+			<tx:method name="upd*" />
+			<tx:method name="del*" />
+			<!-- <tx:method name="*" read-only="true" /> -->
+		</tx:attributes>
+	</tx:advice>
+	<!-- AOP -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.wuhongyu.service.impl.*.*(..))" id="pt"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pt" />
+	</aop:config>
+	<aop:aspectj-autoproxy  proxy-target-class="true"/>
+</beans>
